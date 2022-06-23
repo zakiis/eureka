@@ -11,8 +11,8 @@ RUN addgroup -g 1001 -S wls
 RUN adduser -S -u 1001 -G wls wls81
 RUN mkdir -p /wls/deploy/logs && touch /wls/deploy/logs/app.log && chmod 700 /wls/deploy && chown -R wls81.wls /wls
 # 重定向stdout和stderr
-RUN ln -sf /dev/stdout /wls/deploy/app.log
-RUN ln -sf /dev/stderr /wls/deploy/app.log
+RUN ln -sf /dev/stdout /wls/deploy/logs/app.log
+RUN ln -sf /dev/stderr /wls/deploy/logs/app.log
 # copy当前工程jar包至容器内
 COPY ${JAR_FILE} /wls/deploy/app.jar
 
