@@ -34,30 +34,23 @@ spec:
     spec:
       containers:
         - name: eureka-server
-          image: harborIp:harborPort/duhyper/eureka-server:0.0.5
+          image: registry.cn-hangzhou.aliyuncs.com/zakiis/eureka:0.0.5
           ports:
-            - containerPort: 9007
+            - containerPort: 8761
           resources:
             limits:
-              # jvm会自动发现该限制
+              cpu: "2"
+              memory: 1.5Gi
+            requests:
+              cpu: 500m
               memory: 512Mi
           env:
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: JAVA_OPTS
-              value: -XX:+UnlockExperimentalVMOptions
-                -XX:+UseCGroupMemoryLimitForHeap
-                -XX:MaxRAMFraction=2
-                -XX:CICompilerCount=8
-                -XX:ActiveProcessorCount=8
-                -XX:+UseG1GC
-                -XX:+AggressiveOpts
-                -XX:+UseFastAccessorMethods
-                -XX:+UseStringDeduplication
-                -XX:+UseCompressedOops
-                -XX:+OptimizeStringConcat
+            - name: APP_TIMEZONE
+              value: GMT+8
             - name: EUREKA_SERVER
               value: "http://eureka-server-0.eureka-service:8761/eureka/,http://eureka-server-1.eureka-service:8761/eureka/,http://eureka-server-2.eureka-service:8761/eureka/"
             - name: EUREKA_INSTANCE_HOSTNAME
