@@ -8,13 +8,17 @@ RUN mkdir -p /usr/local/eureka
 ARG JAR_FILE
 # 创建用户和文件夹
 RUN addgroup -g 1001 -S wls
-RUN adduser -S -u 1001 -G wls wls8
+RUN adduser -S -u 1001 -G wls wls81
 RUN mkdir -p /wls/deploy/logs && touch /wls/deploy/logs/app.log && chmod 700 /wls/deploy && chown -R wls81.wls /wls
 # 重定向stdout和stderr
 RUN ln -sf /dev/stdout /wls/deploy/app.log
 RUN ln -sf /dev/stderr /wls/deploy/app.log
 # copy当前工程jar包至容器内
 COPY ${JAR_FILE} /wls/deploy/app.jar
+
+EXPOSE 8761
+USER wls81
+WORKDIR /wls/deploy
 # 运行jar包
 ENTRYPOINT java -server -Duser.timezone=${APP_TIMEZONE} \
 -Xms512m -Xmx512m -Xss1M -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=64m \
