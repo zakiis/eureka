@@ -10,7 +10,7 @@ spec:
   ports:
     - port: 8761                                    # service对外提供服务的端口
       targetPort: 8761
-      nodePort: 8761
+      nodePort: 8761      #如果不用映射到宿主机端口，则不需要加这个配置 
       name: eureka-service
   # clusterIP: None
   type: NodePort
