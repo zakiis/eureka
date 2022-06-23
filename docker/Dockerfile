@@ -4,10 +4,19 @@ FROM openjdk:8-jdk-alpine
 RUN rm -rf /var/lib/apt/lists/*
 # 创建jar包存放目录
 RUN mkdir -p /usr/local/eureka
-# 获取pom文件中build参数
+# 获取--build-arg参数
 ARG JAR_FILE
-# TODO 应当创建用户，把应用放到用户文件夹，以非root用户执行，USER xxx
+# 创建用户和文件夹
+RUN addgroup -g 1001 -S wls
+RUN adduser -S -u 1001 -G wls wls8
+RUN mkdir -p /wls/deploy/logs && touch /wls/deploy/logs/app.log && chmod 700 /wls/deploy && chown -R wls81.wls /wls
+# 重定向stdout和stderr
+RUN ln -sf /dev/stdout /wls/deploy/app.log
+RUN ln -sf /dev/stderr /wls/deploy/app.log
 # copy当前工程jar包至容器内
-COPY ${JAR_FILE} /usr/local/eureka/app.jar
+COPY ${JAR_FILE} /wls/deploy/app.jar
 # 运行jar包
-ENTRYPOINT ["java","-jar","/usr/local/eureka/app.jar"]
+ENTRYPOINT java -server -Duser.timezone=${APP_TIMEZONE} \
+-Xms512m -Xmx512m -Xss1M -XX:MetaspaceSize=64m -XX:MaxMetaspaceSize=64m \
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=logs \
+-jar /wls/deploy/app.jar
