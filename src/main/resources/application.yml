@@ -12,5 +12,5 @@ eureka:
     register-with-eureka: ${BOOL_REGISTER:true}
     fetch-registry: ${BOOL_FETCH:true}
     service-url:
-      defaultZone: ${EUREKA_SERSER:http://${eureka.instance.hostname}:${server.port}/eureka/}
+      defaultZone: ${EUREKA_SERVER:http://${eureka.instance.hostname}:${server.port}/eureka/}
     region: defaultZone
