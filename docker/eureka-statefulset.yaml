@@ -61,7 +61,7 @@ spec:
             failureThreshold: 3
             successThreshold: 1
           env:
-            - name: MY_POD_NAME
+            - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
@@ -70,5 +70,13 @@ spec:
             - name: EUREKA_SERVER
               value: "http://eureka-server-0.eureka-service:8761/eureka/,http://eureka-server-1.eureka-service:8761/eureka/,http://eureka-server-2.eureka-service:8761/eureka/"
             - name: EUREKA_INSTANCE_HOSTNAME
-              value: ${MY_POD_NAME}
+              value: ${POD_NAME}
+          volumeMounts:
+          - mountPath: /wls/deploy/logs
+            name: logs
+            subPathExpr: $(POD_NAME)
+      volumes: 
+      - name: logs
+        hostPath: /data/logs
+        type: Directory
   podManagementPolicy: "Parallel"
