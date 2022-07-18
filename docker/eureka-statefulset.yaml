@@ -75,7 +75,7 @@ spec:
           - mountPath: /wls/deploy/logs
             name: logs
             subPathExpr: $(POD_NAME)
-      initContainers: 
+      initContainers: #先在宿主机初始化目录：mkdir -p /data/logs && groupadd -g 1001 -r wls && useradd -r -g 1001 -u 1001 wls81 && chown wls81:wls /data/logs/
       - name: init-logdir
         image: registry.cn-hangzhou.aliyuncs.com/zakiis/eureka:0.0.5
         command: ['sh', '-c', 'mkdir -p /wls/deploy/logs/${POD_NAME}']
