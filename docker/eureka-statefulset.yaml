@@ -48,7 +48,7 @@ spec:
             httpGet:
               path: /health
               port: 8761
-              schema: HTTP
+              scheme: HTTP
             initialDelaySeconds: 20
             periodSeconds: 5
             failureThreshold: 3
