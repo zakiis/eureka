@@ -75,9 +75,21 @@ spec:
           - mountPath: /wls/deploy/logs
             name: logs
             subPathExpr: $(POD_NAME)
+      initContainers: 
+      - name: init-logdir
+        image: registry.cn-hangzhou.aliyuncs.com/zakiis/eureka:0.0.5
+        command: ['sh', '-c', 'mkdir -p /wls/deploy/logs/${POD_NAME}']
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - mountPath: /wls/deploy/logs
+          name: logs
       volumes: 
       - name: logs
         hostPath: 
           path: /data/logs
-          type: DirectoryOrCreate
+          type: Directory
   podManagementPolicy: "Parallel"
